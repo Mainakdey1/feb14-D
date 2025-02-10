@@ -11,19 +11,27 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: pink;
+            background-color: rgb(230, 165, 216);
             font-family: Arial, sans-serif;
             text-align: center;
             overflow: hidden;
+            position: relative;
+            transition: background-color 0.5s ease; /* Smooth background transition */
         }
         h1 {
             color: red;
             font-size: 50px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, background-color 0.5s ease;
+            padding: 10px 20px;
+            border-radius: 10px;
         }
         h1:hover {
             transform: scale(1.1);
+            background-color: rgb(230, 129, 221); /* Light background on hover */
+        }
+        body.hover-effect {
+            background-color: #f088cd; /* Light pink transition */
         }
         .modal {
             display: none;
@@ -40,12 +48,18 @@
         }
         .modal button {
             margin-top: 10px;
-            padding: 5px 10px;
+            padding: 10px 15px;
             background: red;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .modal button:hover {
+            background-color: darkred;
+            transform: scale(1.1);
         }
         .overlay {
             display: none;
@@ -57,15 +71,32 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: 5;
         }
+        /* Heart Animation */
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 25px;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            from {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <h1 onclick="showMessage()">Hey there ;)</h1>
+    <h1 id="loveButton" onclick="showMessage()">Hey there:)</h1>
 
     <div class="overlay" id="overlay"></div>
     <div class="modal" id="modal">
-        <p>You are the most amazing person in my life! 💖</p>
+        <p>You are the most amazing person in my life! </p>
         <button onclick="closeMessage()">Close</button>
     </div>
 
@@ -79,6 +110,31 @@
             document.getElementById("modal").style.display = "none";
             document.getElementById("overlay").style.display = "none";
         }
+
+        // Change background color when hovering over the "I Love You" button
+        document.getElementById("loveButton").addEventListener("mouseover", function() {
+            document.body.classList.add("hover-effect");
+        });
+
+        document.getElementById("loveButton").addEventListener("mouseout", function() {
+            document.body.classList.remove("hover-effect");
+        });
+
+        // Create falling hearts effect
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw"; // Random horizontal position
+            heart.style.animationDuration = (Math.random() * 2 + 3) + "s"; // Random fall speed
+            heart.style.fontSize = Math.random() * 20 + 10 + "px"; // Random size
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+        setInterval(createHeart, 300); // Creates a new heart every 300ms
     </script>
 
 </body>
