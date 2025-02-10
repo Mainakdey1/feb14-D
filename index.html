@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A little surprise:)</title>
+    <title>A little surprise :)</title>
     <style>
         body {
             display: flex;
@@ -16,7 +16,7 @@
             text-align: center;
             overflow: hidden;
             position: relative;
-            transition: background-color 0.5s ease; /* Smooth background transition */
+            transition: background-color 0.5s ease;
         }
         h1 {
             color: red;
@@ -28,10 +28,10 @@
         }
         h1:hover {
             transform: scale(1.1);
-            background-color: rgb(230, 129, 221); /* Light background on hover */
+            background-color: rgb(230, 129, 221);
         }
         body.hover-effect {
-            background-color: #f088cd; /* Light pink transition */
+            background-color: #f088cd;
         }
         .modal {
             display: none;
@@ -39,12 +39,19 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            width: 60%;
+            max-width: 500px;
             background-color: white;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             text-align: center;
             z-index: 10;
+            transition: opacity 0.5s ease, transform 0.3s ease;
+        }
+        .modal p {
+            font-size: 18px;
+            color: #333;
         }
         .modal button {
             margin-top: 10px;
@@ -88,30 +95,93 @@
                 opacity: 0;
             }
         }
+                /* Flower Burst Animation */
+                .flower {
+            position: absolute;
+            font-size: 30px;
+            opacity: 1;
+            animation: burst 1.5s ease-out forwards;
+        }
+        @keyframes burst {
+            0% {
+                transform: scale(0) translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5) translate(calc(50vw - 50%), calc(-50vh));
+                opacity: 0;
+            }
+        }
+        /* Fade-in Message */
+        .fade-in-message {
+            display: none;
+            font-size: 24px;
+            color: #4B0082;
+            opacity: 0;
+            animation: fadeIn 2s ease-out forwards;
+            margin-top: 20px;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <h1 id="loveButton" onclick="showMessage()">Hey there:)</h1>
+    <h1 id="loveButton" onclick="showCard(1)">Hey there :)</h1>
 
     <div class="overlay" id="overlay"></div>
-    <div class="modal" id="modal">
-        <p>You are the most amazing person in my life! </p>
-        <button onclick="closeMessage()">Close</button>
+
+    <!-- First Card -->
+    <div class="modal" id="card1">
+        <p>You are the most amazing person in my life! 💖</p>
+        <button onclick="showCard(2)">Next</button>
+    </div>
+    <!-- Second Card -->
+    <div class="modal" id="card2">
+        <p>And you're the center of the universe for someone special 😏. You know why?</p>
+        <button onclick="showCard(3)">Next</button>
     </div>
 
+    <!-- Third Card -->
+    <div class="modal" id="card3">
+        <p>Because every moment with you feels like magic ✨✨</p>
+        <button onclick="closeCard()">Close</button>
+    </div>
+    <!-- Fade-In Final Message -->
+    <div class="fade-in-message" id="finalMessage">Stay with me forever Miss Teotia💕</div>
     <script>
-        function showMessage() {
-            document.getElementById("modal").style.display = "block";
+        function showCard(cardNumber) {
             document.getElementById("overlay").style.display = "block";
-        }
-        
-        function closeMessage() {
-            document.getElementById("modal").style.display = "none";
+            if (cardNumber === 1) {
+                document.getElementById("card1").style.display = "block";
+                document.getElementById("card2").style.display = "none";
+            } else if (cardNumber === 2) {
+                document.getElementById("card1").style.display = "none";
+                document.getElementById("card2").style.display = "block";
+            }
+            else if (cardNumber === 3) {
+                document.getElementById("card2").style.display = "none";
+                document.getElementById("card3").style.display = "block";
+        }}
+
+        function closeCard() {
             document.getElementById("overlay").style.display = "none";
+            document.getElementById("card1").style.display = "none";
+            document.getElementById("card2").style.display = "none";
+            document.getElementById("card3").style.display = "none";
+            document.getElementById("loveButton").style.display = "none";
+            flowerBurst();
+            hideHearts();
+            showFinalMessage();
         }
 
-        // Change background color when hovering over the "I Love You" button
+        // Change background color when hovering over the "Hey there" button
         document.getElementById("loveButton").addEventListener("mouseover", function() {
             document.body.classList.add("hover-effect");
         });
@@ -125,16 +195,46 @@
             const heart = document.createElement("div");
             heart.classList.add("heart");
             heart.innerHTML = "❤️";
-            heart.style.left = Math.random() * 100 + "vw"; // Random horizontal position
-            heart.style.animationDuration = (Math.random() * 2 + 3) + "s"; // Random fall speed
-            heart.style.fontSize = Math.random() * 20 + 10 + "px"; // Random size
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+            heart.style.fontSize = Math.random() * 20 + 10 + "px";
             document.body.appendChild(heart);
 
             setTimeout(() => {
                 heart.remove();
             }, 4000);
         }
-        setInterval(createHeart, 300); // Creates a new heart every 300ms
+        setInterval(createHeart, 300);
+               // Create a burst of flowers with more bouquets
+        function flowerBurst() {
+            const flowers = ["🌸", "🌹", "🌺", "🌻", "💐"];
+            for (let i = 0; i < 50; i++) {  // Increased the number of flowers
+                const flower = document.createElement("div");
+                flower.classList.add("flower");
+                flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+                flower.style.left = Math.random() * 100 + "vw";
+                flower.style.top = Math.random() * 100 + "vh";
+                flower.style.fontSize = Math.random() * 30 + 20 + "px";
+                document.body.appendChild(flower);
+
+                setTimeout(() => {
+                    flower.remove();
+                }, 1500);
+            }
+        }
+
+        // Hide the hearts after the final scene
+        function hideHearts() {
+            const hearts = document.querySelectorAll('.heart');
+            hearts.forEach(heart => heart.remove());
+        }
+        // Show the fade-in final message
+        function showFinalMessage() {
+            const finalMessage = document.getElementById("finalMessage");
+            setTimeout(() => {
+                finalMessage.style.display = "block"; // Make it visible
+            }, 2000); // Wait 2 seconds for the flower burst to finish
+        }
     </script>
 
 </body>
